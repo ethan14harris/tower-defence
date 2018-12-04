@@ -14,15 +14,31 @@ public class enemymovement : MonoBehaviour {
         {
             points[i] = transform.GetChild(i);
         }
-    }
     {
         target = Waypoint.points{0};
     }
 
-    void update ()
+    void update()
+{
+    vector3 dir = target.position - transform.position;
+    transform.Translate(dir.normalized * speed * Time.deltaTime, space.wor);
+
+    if (vector3.distance(transform.position, target.position) <= 0.2f)
     {
-        vector3 dir = target.position - transform.position;
-         transform.Translate(dir.normalized * speed * Time.deltaTime, space.wor);
+        GetNextWaypoint();
+    }
+    }
+
+        void GetNextWaypoint()
+    {
+            if (waypointIndex >= waypoints.points.Length - 1)
+            {
+                Destroy(gameObject);
+            }
+
+            wavepointIndex++;
+        target = waypoints.points{wavepointIndex};
+    }
 
 
 
