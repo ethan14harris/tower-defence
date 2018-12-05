@@ -1,47 +1,39 @@
 ﻿using UnityEngine;
 
-public class enemymovement : MonoBehaviour {
+public class EnemyMovement : MonoBehaviour
+{
 
     public float speed = 10f;
 
     private Transform target;
     private int wavepointIndex = 0;
 
-    void start()
+    void Start()
     {
-        points = new Transform[transform.childCDount];
-        for (int i = 0; i < points.Length; i++)
+        target = Waypoints.points[0];
+    }
+
+    void Update()
+    {
+        Vector3 dir = target.position - transform.position;
+        transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+
+        if (Vector3.Distance(transform.position, target.position) <= 0.2f)
         {
-            points[i] = transform.GetChild(i);
+            GetNextWaypoint();
         }
+    }
+
+    void GetNextWaypoint()
     {
-        target = Waypoint.points{0};
+        if (wavepointIndex >= Waypoints.points.Length - 1)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        wavepointIndex++;
+        target = Waypoints.points[wavepointIndex];
     }
-
-    void update()
-{
-    vector3 dir = target.position - transform.position;
-    transform.Translate(dir.normalized * speed * Time.deltaTime, space.wor);
-
-    if (vector3.distance(transform.position, target.position) <= 0.2f)
-    {
-        GetNextWaypoint();
-    }
-    }
-
-        void GetNextWaypoint()
-    {
-            if (waypointIndex >= waypoints.points.Length - 1)
-            {
-                Destroy(gameObject);
-            }
-
-            wavepointIndex++;
-        target = waypoints.points{wavepointIndex};
-    }
-
-
-
-    }   
 
 }
